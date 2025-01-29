@@ -1,4 +1,3 @@
-import "@repo/sanity-types";
 import { defineQuery } from "next-sanity";
 import { client } from "../sanity-client";
 

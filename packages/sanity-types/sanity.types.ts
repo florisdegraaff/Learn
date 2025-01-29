@@ -132,7 +132,7 @@ export type Course = {
   _updatedAt: string;
   _rev: string;
   title?: string;
-  Slug?: Slug;
+  slug?: Slug;
 };
 
 export type Slug = {
@@ -153,7 +153,7 @@ export type COURSES_QUERYResult = Array<{
   _updatedAt: string;
   _rev: string;
   title?: string;
-  Slug?: Slug;
+  slug?: Slug;
 }>;
 
 // Query TypeMap

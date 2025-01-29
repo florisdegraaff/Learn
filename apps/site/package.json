@@ -11,8 +11,12 @@
     "check-types": "tsc --noEmit"
   },
   "dependencies": {
+    "@emotion/cache": "^11.14.0",
+    "@emotion/styled": "^11.14.0",
+    "@mui/icons-material": "^6.4.2",
+    "@mui/material": "^6.4.2",
+    "@mui/material-nextjs": "^6.4.2",
     "@repo/sanity-types": "*",
-    "@repo/ui": "*",
     "next": "^15.1.6",
     "next-sanity": "^9.8.46",
     "react": "^19.0.0",

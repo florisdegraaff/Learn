@@ -704,7 +704,7 @@
         },
         "optional": true
       },
-      "Slug": {
+      "slug": {
         "type": "objectAttribute",
         "value": {
           "type": "inline",
