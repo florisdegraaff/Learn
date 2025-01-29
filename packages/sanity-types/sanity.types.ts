@@ -143,3 +143,23 @@ export type Slug = {
 
 export type AllSanitySchemaTypes = SanityImagePaletteSwatch | SanityImagePalette | SanityImageDimensions | SanityImageHotspot | SanityImageCrop | SanityFileAsset | SanityImageAsset | SanityImageMetadata | Geopoint | SanityAssetSourceData | Course | Slug;
 export declare const internalGroqTypeReferenceTo: unique symbol;
+// Source: ../site/lib/sanity/queries.ts
+// Variable: COURSES_QUERY
+// Query: *[_type == "course"]
+export type COURSES_QUERYResult = Array<{
+  _id: string;
+  _type: "course";
+  _createdAt: string;
+  _updatedAt: string;
+  _rev: string;
+  title?: string;
+  Slug?: Slug;
+}>;
+
+// Query TypeMap
+import "@sanity/client";
+declare module "@sanity/client" {
+  interface SanityQueries {
+    "*[_type == \"course\"]": COURSES_QUERYResult;
+  }
+}

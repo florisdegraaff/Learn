@@ -14,6 +14,7 @@
     "@repo/sanity-types": "*",
     "@repo/ui": "*",
     "next": "^15.1.6",
+    "next-sanity": "^9.8.46",
     "react": "^19.0.0",
     "react-dom": "^19.0.0"
   },
