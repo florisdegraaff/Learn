@@ -663,6 +663,37 @@
     }
   },
   {
+    "name": "theme",
+    "type": "type",
+    "value": {
+      "type": "object",
+      "attributes": {
+        "_type": {
+          "type": "objectAttribute",
+          "value": {
+            "type": "string",
+            "value": "theme"
+          }
+        },
+        "title": {
+          "type": "objectAttribute",
+          "value": {
+            "type": "string"
+          },
+          "optional": false
+        },
+        "slug": {
+          "type": "objectAttribute",
+          "value": {
+            "type": "inline",
+            "name": "slug"
+          },
+          "optional": false
+        }
+      }
+    }
+  },
+  {
     "name": "course",
     "type": "document",
     "attributes": {
@@ -702,13 +733,35 @@
         "value": {
           "type": "string"
         },
-        "optional": true
+        "optional": false
       },
       "slug": {
         "type": "objectAttribute",
         "value": {
           "type": "inline",
           "name": "slug"
+        },
+        "optional": false
+      },
+      "themes": {
+        "type": "objectAttribute",
+        "value": {
+          "type": "array",
+          "of": {
+            "type": "object",
+            "attributes": {
+              "_key": {
+                "type": "objectAttribute",
+                "value": {
+                  "type": "string"
+                }
+              }
+            },
+            "rest": {
+              "type": "inline",
+              "name": "theme"
+            }
+          }
         },
         "optional": true
       }
@@ -732,7 +785,7 @@
           "value": {
             "type": "string"
           },
-          "optional": true
+          "optional": false
         },
         "source": {
           "type": "objectAttribute",

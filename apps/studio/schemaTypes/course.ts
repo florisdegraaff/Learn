@@ -8,7 +8,8 @@ export const course = defineType({
     defineField({
       title: "Title",
       name: "title",
-      type: "string"
+      type: "string",
+      validation: (rule) => rule.required()
     }),
     defineField({
       title: "Slug",
@@ -21,5 +22,11 @@ export const course = defineType({
       },
       validation: (rule) => rule.required()
     }),
+    defineField({
+      title: "Themes",
+      name: "themes",
+      type: "array", 
+      of: [{ type: "theme" }]
+    })
   ],
 })
