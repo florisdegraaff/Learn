@@ -1,15 +1,15 @@
+'use client'
 import { Container } from "@mui/material"
+import { OpenQuestion } from "../../../components/questions/openQuestion/openQuestion"
+import { useQuiz } from "../../../components/quiz/quiz"
 
-export default async function CoursePage (pageProps: Readonly<{
-  params: Promise<{
-    courseSlug: string
-    themeSlug: string
-  }>,
-}>) {
-  const {courseSlug} = await pageProps.params
-
+export default function CoursePage () {
+  const { currentQuestion } = useQuiz()
   return (
     <Container component={"main"}>
+      {currentQuestion?._type === 'openQuestion' 
+      ? <OpenQuestion {...currentQuestion} />
+      : undefined}
     </Container>
   )
 }

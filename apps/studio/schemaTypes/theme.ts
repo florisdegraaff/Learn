@@ -21,6 +21,15 @@ export const theme = defineType({
         slugify: input => input.toLowerCase().replace(/\s+/g, '-').slice(0, 200)
       },
       validation: (rule) => rule.required()
+    }),
+    defineField({
+      title: "Questions",
+      name: "questions",
+      type: "array",
+      of: [
+        { type: "openQuestion" }
+      ],
+      validation: (rule) => rule.required()
     })
   ]
 })

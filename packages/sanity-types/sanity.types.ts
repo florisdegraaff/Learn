@@ -125,10 +125,19 @@ export type SanityAssetSourceData = {
   url?: string;
 };
 
+export type OpenQuestion = {
+  _type: "openQuestion";
+  question: string;
+  answer: string;
+};
+
 export type Theme = {
   _type: "theme";
   title: string;
   slug: Slug;
+  questions: Array<{
+    _key: string;
+  } & OpenQuestion>;
 };
 
 export type Course = {
@@ -150,7 +159,7 @@ export type Slug = {
   source?: string;
 };
 
-export type AllSanitySchemaTypes = SanityImagePaletteSwatch | SanityImagePalette | SanityImageDimensions | SanityImageHotspot | SanityImageCrop | SanityFileAsset | SanityImageAsset | SanityImageMetadata | Geopoint | SanityAssetSourceData | Theme | Course | Slug;
+export type AllSanitySchemaTypes = SanityImagePaletteSwatch | SanityImagePalette | SanityImageDimensions | SanityImageHotspot | SanityImageCrop | SanityFileAsset | SanityImageAsset | SanityImageMetadata | Geopoint | SanityAssetSourceData | OpenQuestion | Theme | Course | Slug;
 export declare const internalGroqTypeReferenceTo: unique symbol;
 // Source: ../site/lib/sanity/queries.ts
 // Variable: COURSES_QUERY
@@ -181,6 +190,11 @@ export type COURSE_BY_SLUG_QUERYResult = {
     _key: string;
   } & Theme>;
 } | null;
+// Variable: THEME_BY_SLUG_QUERY
+// Query: *[_type == "course" && slug.current == $courseSlug][0].themes[slug.current == $themeSlug][0]
+export type THEME_BY_SLUG_QUERYResult = {
+  _key: string;
+} & Theme | null;
 
 // Query TypeMap
 import "@sanity/client";
@@ -188,5 +202,6 @@ declare module "@sanity/client" {
   interface SanityQueries {
     "*[_type == \"course\"]": COURSES_QUERYResult;
     "*[_type == \"course\" && slug.current == $courseSlug][0]": COURSE_BY_SLUG_QUERYResult;
+    "*[_type == \"course\" && slug.current == $courseSlug][0].themes[slug.current == $themeSlug][0]": THEME_BY_SLUG_QUERYResult;
   }
 }
