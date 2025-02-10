@@ -1,11 +1,14 @@
 {
   "$schema": "https://turbo.build/schema.json",
   "ui": "tui",
+  "globalDependencies": [".env"],
+  "globalEnv": ["GPT_API_KEY"],
   "tasks": {
     "build": {
       "dependsOn": ["^build"],
       "inputs": ["$TURBO_DEFAULT$", ".env*"],
-      "outputs": [".next/**", "!.next/cache/**"]
+      "outputs": [".next/**", "!.next/cache/**"],
+      "env": ["GPT_API_KEY"]
     },
     "lint": {
       "dependsOn": ["^lint"]
@@ -15,7 +18,9 @@
     },
     "dev": {
       "cache": false,
-      "persistent": true
+      "persistent": true,
+      "inputs": [".env"],
+      "env": ["GPT_API_KEY"]
     },
     "typegen": {
       "cache": false,

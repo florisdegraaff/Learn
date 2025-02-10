@@ -12,10 +12,20 @@ export const openQuestion = defineType({
       validation: (rule) => rule.required()
     }),
     defineField({
+      title: "Image",
+      name: "image",
+      type: "image",
+    }),
+    defineField({
       title: "Answer",
       name: "answer",
       type: "string",
       validation: (rule) => rule.required()
+    }),
+    defineField({
+      title: "Answer is exact",
+      name: "exact",
+      type: "boolean",
     })
   ]
 })
