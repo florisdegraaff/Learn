@@ -1,20 +1,19 @@
 'use client'
-import { createContext, useCallback, useContext, useState } from "react";
+import { createContext, useContext, useEffect, useState } from "react";
+import { useQuiz } from "./quiz";
 
 type QuestionContextType = {
-  status: "answering" | "answered",
-  setStatus: (status: "answering" | "answered") => void,
-  response: "correct" | "incorrect" | undefined,
-  setResponse: (response: "correct" | "incorrect") => void,
-  reset: () => void
+  phase: "answering" | "answered",
+  setPhase: (status: "answering" | "answered") => void,
+  result: "correct" | "incorrect" | undefined,
+  setResult: (response: "correct" | "incorrect") => void,
 }
 
 const QuestionContext = createContext<QuestionContextType>({
-  status: "answering",
-  setStatus: () => undefined,
-  response: undefined,
-  setResponse: () => undefined,
-  reset: () => undefined
+  phase: "answering",
+  setPhase: () => undefined,
+  result: undefined,
+  setResult: () => undefined,
 })
 
 type QuestionContextProviderProps = {
@@ -23,21 +22,21 @@ type QuestionContextProviderProps = {
 
 export function QuestionContextProvider (props: QuestionContextProviderProps) {
   const { children } = props
-  const [status, setStatus] = useState<"answering" | "answered">("answering")
-  const [response, setResponse] = useState<"correct" | "incorrect" | undefined>(undefined)
+  const [phase, setPhase] = useState<"answering" | "answered">("answering")
+  const [result, setResult] = useState<"correct" | "incorrect" | undefined>(undefined)
+  const {currentQuestion} = useQuiz()
 
-  const reset = useCallback(() => {
-    setStatus("answering")
-    setResponse(undefined)
-  }, [])
+  useEffect(() => {
+    setPhase("answering")
+    setResult(undefined)
+  }, [currentQuestion])
 
   return (
     <QuestionContext.Provider value={{
-      status,
-      setStatus,
-      response,
-      setResponse,
-      reset
+      phase,
+      setPhase,
+      result,
+      setResult
     }}>
       {children}
     </QuestionContext.Provider>

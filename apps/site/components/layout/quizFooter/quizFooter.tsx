@@ -5,7 +5,7 @@ import { useQuiz } from "../../quiz/quiz";
 
 export function QuizFooter () {
   const { nextQuestion } = useQuiz()
-  const { status, setStatus, response } = useQuestion()
+  const { phase: status, setPhase: setStatus } = useQuestion()
   return (
     <AppBar position="fixed" component="footer" sx={{
       bottom: 0,

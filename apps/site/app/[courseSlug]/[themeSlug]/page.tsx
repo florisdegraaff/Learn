@@ -8,7 +8,7 @@ export default function CoursePage () {
   return (
     <Container component={"main"}>
       {currentQuestion?._type === 'openQuestion' 
-      ? <OpenQuestion {...currentQuestion} />
+      ? <OpenQuestion {...currentQuestion} key={currentQuestion._key} />
       : undefined}
     </Container>
   )

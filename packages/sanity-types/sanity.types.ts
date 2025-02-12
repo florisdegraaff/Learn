@@ -82,17 +82,6 @@ export type OpenQuestion = {
     crop?: SanityImageCrop;
     _type: "image";
   };
-  image2?: {
-    asset?: {
-      _ref: string;
-      _type: "reference";
-      _weak?: boolean;
-      [internalGroqTypeReferenceTo]?: "sanity.imageAsset";
-    };
-    hotspot?: SanityImageHotspot;
-    crop?: SanityImageCrop;
-    _type: "image";
-  };
   answer: string;
   exact?: boolean;
 };
