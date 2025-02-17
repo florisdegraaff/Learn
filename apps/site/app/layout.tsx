@@ -2,7 +2,6 @@ import { ThemeProvider } from '@mui/material';
 import { AppRouterCacheProvider } from '@mui/material-nextjs/v15-appRouter';
 import type { Metadata } from "next";
 import localFont from "next/font/local";
-import { fetchCourses } from '../lib/sanity/queries';
 import theme from '../lib/theme';
 import "./globals.css";
 
@@ -25,8 +24,6 @@ export default async function RootLayout({
 }: Readonly<{
   children: React.ReactNode;
 }>) {
-  const courses = await fetchCourses()
-
   return (
     <html lang="en">
       <body className={`${geistSans.variable} ${geistMono.variable}`}>
