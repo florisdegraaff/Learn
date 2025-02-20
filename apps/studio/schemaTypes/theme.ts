@@ -27,7 +27,8 @@ export const theme = defineType({
       name: "questions",
       type: "array",
       of: [
-        { type: "openQuestion" }
+        { type: "openQuestion" },
+        { type: "multiQuestion" }
       ],
       validation: (rule) => rule.required()
     })
