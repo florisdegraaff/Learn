@@ -2,13 +2,13 @@
   "$schema": "https://turbo.build/schema.json",
   "ui": "tui",
   "globalDependencies": [".env"],
-  "globalEnv": ["GPT_API_KEY"],
+  "globalEnv": ["GPT_API_KEY", "SANITY_STUDIO_DATASET", "SANITY_STUDIO_PROJECT_ID"],
   "tasks": {
     "build": {
       "dependsOn": ["^build"],
       "inputs": ["$TURBO_DEFAULT$", ".env*"],
       "outputs": [".next/**", "!.next/cache/**"],
-      "env": ["GPT_API_KEY"]
+      "env": ["GPT_API_KEY", "SANITY_STUDIO_DATASET", "SANITY_STUDIO_PROJECT_ID"]
     },
     "lint": {
       "dependsOn": ["^lint"]
@@ -20,7 +20,7 @@
       "cache": false,
       "persistent": true,
       "inputs": [".env"],
-      "env": ["GPT_API_KEY"]
+      "env": ["GPT_API_KEY", "SANITY_STUDIO_DATASET", "SANITY_STUDIO_PROJECT_ID"]
     },
     "typegen": {
       "cache": false,
