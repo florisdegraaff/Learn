@@ -54,7 +54,7 @@ export function MultiQuestion (props: MultiQuestionProps) {
       <List>
         {userAnswers.map((userAnswer, key) => {
           return (
-            <ListItem key={`${userAnswer.replace(' ', '-')}-${key}`} sx={{
+            <ListItem key={`userAnswer-${key}`} sx={{
               columnGap: "1rem"
             }}>
               <TextField
@@ -64,6 +64,8 @@ export function MultiQuestion (props: MultiQuestionProps) {
                   newUserAnswers[key] = event.currentTarget.value
                   setUserAnswers(newUserAnswers)
                 }}
+                disabled={phase === 'answered'}
+                value={userAnswer}
               />
               <IconButton
                 onClick={() => {
@@ -72,7 +74,7 @@ export function MultiQuestion (props: MultiQuestionProps) {
                   newUserAnswers.splice(key, 1)
                   setUserAnswers(newUserAnswers)
                 }}
-                disabled={userAnswers.length < 1}
+                disabled={userAnswers.length < 1 || phase === 'answered'}
               ><Delete /></IconButton>
             </ListItem>
           )
@@ -82,6 +84,7 @@ export function MultiQuestion (props: MultiQuestionProps) {
       <Button
         startIcon={<Add/>}
         onClick={() => setUserAnswers((userAnswers) => [...userAnswers, ''])}
+        disabled={phase === 'answered'}
       >Voeg toe</Button>
 
       <Box display={"flex"}>
