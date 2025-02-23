@@ -68,6 +68,24 @@ export type Geopoint = {
   alt?: number;
 };
 
+export type MultiQuestion = {
+  _type: "multiQuestion";
+  question: string;
+  image?: {
+    asset?: {
+      _ref: string;
+      _type: "reference";
+      _weak?: boolean;
+      [internalGroqTypeReferenceTo]?: "sanity.imageAsset";
+    };
+    hotspot?: SanityImageHotspot;
+    crop?: SanityImageCrop;
+    _type: "image";
+  };
+  answers: Array<string>;
+  exact?: boolean;
+};
+
 export type OpenQuestion = {
   _type: "openQuestion";
   question: string;
@@ -92,7 +110,9 @@ export type Theme = {
   slug: Slug;
   questions: Array<{
     _key: string;
-  } & OpenQuestion>;
+  } & OpenQuestion | {
+    _key: string;
+  } & MultiQuestion>;
 };
 
 export type Course = {
@@ -171,7 +191,7 @@ export type Slug = {
   source?: string;
 };
 
-export type AllSanitySchemaTypes = SanityImagePaletteSwatch | SanityImagePalette | SanityImageDimensions | SanityFileAsset | Geopoint | OpenQuestion | Theme | Course | SanityImageCrop | SanityImageHotspot | SanityImageAsset | SanityAssetSourceData | SanityImageMetadata | Slug;
+export type AllSanitySchemaTypes = SanityImagePaletteSwatch | SanityImagePalette | SanityImageDimensions | SanityFileAsset | Geopoint | MultiQuestion | OpenQuestion | Theme | Course | SanityImageCrop | SanityImageHotspot | SanityImageAsset | SanityAssetSourceData | SanityImageMetadata | Slug;
 export declare const internalGroqTypeReferenceTo: unique symbol;
 // Source: ../site/lib/sanity/queries.ts
 // Variable: COURSES_QUERY

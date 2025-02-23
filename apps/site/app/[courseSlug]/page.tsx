@@ -9,6 +9,8 @@ export default async function CoursePage (pageProps: Readonly<{
   const {courseSlug} = await pageProps.params
   const course = await fetchCourseBySlug(courseSlug)
 
+  console.log(course)
+
   return (
     <Container component={"main"}>
       <Typography variant="h1">{course?.title}</Typography>

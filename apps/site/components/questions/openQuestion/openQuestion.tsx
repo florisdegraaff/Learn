@@ -3,6 +3,7 @@ import { Box, CircularProgress, TextField, Typography } from "@mui/material";
 import { OpenQuestion as OpenQuestionType } from "@repo/sanity-types";
 import Image from "next/image";
 import { useEffect, useState } from "react";
+import { checkAnswerWithGPT } from "../../../lib/gpt";
 import { urlFor } from "../../../lib/sanity/urlFor";
 import { useQuestion } from "../../quiz/question";
 
@@ -22,21 +23,13 @@ export function OpenQuestion (props: OpenQuestionProps) {
         setResult(userAnswer.toLowerCase() === answer.toLowerCase() ? "correct" : "incorrect")
       } else {
         setIsLoading(true)
-        fetch('/api/gpt', {
-          method: 'post',
-          body: JSON.stringify({
-            question,
-            answer,
-            userAnswer
-          })
-        })
-        .then(response => response.json())
-        .then(({response}) => {
-          setResult(response.result)
-          const feedback = response.feedback
-          if (feedback) setFeedback(feedback)
-          setIsLoading(false)
-        }) 
+        checkAnswerWithGPT(question, answer, userAnswer)
+          .then(({response}) => {
+            setResult(response.result)
+            const feedback = response.feedback
+            if (feedback) setFeedback(feedback)
+            setIsLoading(false)
+          }) 
       }
     }
   }, [answer, exact, result, setResult, phase, userAnswer, question, isLoading])
