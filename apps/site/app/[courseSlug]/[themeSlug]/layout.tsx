@@ -1,6 +1,5 @@
 import { Typography } from "@mui/material";
 import { QuizFooter } from "../../../components/layout/quizFooter/quizFooter";
-import { QuestionContextProvider } from "../../../components/quiz/question";
 import { QuizContextProvider } from "../../../components/quiz/quiz";
 import { fetchThemeBySlug } from "../../../lib/sanity/queries";
 
@@ -22,10 +21,8 @@ export default async function CourseLayout ({
 
   return (
     <QuizContextProvider theme={theme}>
-      <QuestionContextProvider>
-        {children}
-        <QuizFooter />
-      </QuestionContextProvider>
+      {children}
+      <QuizFooter />
     </QuizContextProvider>
   )
 }

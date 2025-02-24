@@ -5,13 +5,13 @@ import Image from "next/image";
 import { useEffect, useState } from "react";
 import { checkAnswerWithGPT } from "../../../lib/gpt";
 import { urlFor } from "../../../lib/sanity/urlFor";
-import { useQuestion } from "../../quiz/question";
+import { useQuiz } from "../../quiz/quiz";
 
 type OpenQuestionProps = Omit<OpenQuestionType, '_type'>
 
 export function OpenQuestion (props: OpenQuestionProps) {
   const { question, answer, image, exact } = props
-  const { phase, setPhase, result, setResult } = useQuestion()
+  const { phase, setPhase, result, setResult, currentAttempt, addReloadQuestionEventListener, removeReloadQuestionEventListener } = useQuiz()
 
   const [userAnswer, setUserAnswer] = useState<string>('')
   const [isLoading, setIsLoading] = useState<boolean>(false)
@@ -35,10 +35,11 @@ export function OpenQuestion (props: OpenQuestionProps) {
   }, [answer, exact, result, setResult, phase, userAnswer, question, isLoading])
 
   useEffect(() => {
-    if (phase === 'answering') {
-      setUserAnswer('')
-    }
-  }, [phase])
+    const reloadQuestion = () => setUserAnswer("")
+    addReloadQuestionEventListener(reloadQuestion)
+
+    return () => removeReloadQuestionEventListener(reloadQuestion)
+  }, [addReloadQuestionEventListener, removeReloadQuestionEventListener])
 
   return (
     <Box component={"form"} onSubmit={(event) => {

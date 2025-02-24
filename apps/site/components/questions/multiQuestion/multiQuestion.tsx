@@ -6,13 +6,13 @@ import Image from "next/image";
 import { useEffect, useState } from "react";
 import { checkAnswerWithGPT } from "../../../lib/gpt";
 import { urlFor } from "../../../lib/sanity/urlFor";
-import { useQuestion } from "../../quiz/question";
+import { useQuiz } from "../../quiz/quiz";
 
 type MultiQuestionProps = Omit<MultiQuestionType, '_type'>
 
 export function MultiQuestion (props: MultiQuestionProps) {
   const { question, answers, image, exact } = props
-  const { phase, setPhase, result, setResult } = useQuestion()
+  const { phase, setPhase, result, setResult, addReloadQuestionEventListener, removeReloadQuestionEventListener } = useQuiz()
 
   const [userAnswers, setUserAnswers] = useState<Array<string>>([''])
   const [isLoading, setIsLoading] = useState<boolean>(false)
@@ -44,6 +44,13 @@ export function MultiQuestion (props: MultiQuestionProps) {
       setUserAnswers([''])
     }
   }, [phase])
+
+  useEffect(() => {
+    const reloadQuestion = () => setUserAnswers([''])
+    addReloadQuestionEventListener(reloadQuestion)
+
+    return () => removeReloadQuestionEventListener(reloadQuestion)
+  }, [addReloadQuestionEventListener, removeReloadQuestionEventListener])
 
   return (
     <Box component={"form"} onSubmit={(event) => {

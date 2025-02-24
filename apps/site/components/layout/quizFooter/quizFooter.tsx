@@ -1,25 +1,28 @@
 'use client'
 import { AppBar, Button, Toolbar } from "@mui/material";
-import { useQuestion } from "../../quiz/question";
 import { useQuiz } from "../../quiz/quiz";
 
 export function QuizFooter () {
   const { nextQuestion } = useQuiz()
-  const { phase: status, setPhase: setStatus } = useQuestion()
+  const { phase, setPhase, result } = useQuiz()
   return (
     <AppBar position="fixed" component="footer" sx={{
       bottom: 0,
       top: 'auto'
     }}>
       <Toolbar variant="dense">
-        {status === 'answering' ? (
+        {phase === 'answering' ? (
           <Button onClick={() => {
-            setStatus('answered')
+            setPhase('answered')
           }}>Bevestig</Button>
+        ) : result === 'correct' ? (
+          <Button onClick={() => {
+            if (nextQuestion) nextQuestion(result || 'correct')
+          }}>Volgende vraag</Button>
         ) : (
           <Button onClick={() => {
-            if (nextQuestion) nextQuestion()
-          }}>Volgende vraag</Button>
+            if (nextQuestion) nextQuestion(result || 'incorrect')
+          }}>Probeer opnieuw</Button>
         )}
       </Toolbar>
     </AppBar>
