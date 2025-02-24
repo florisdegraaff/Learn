@@ -12,7 +12,7 @@ type MultiQuestionProps = Omit<MultiQuestionType, '_type'>
 
 export function MultiQuestion (props: MultiQuestionProps) {
   const { question, answers, image, exact } = props
-  const { phase, setPhase, result, setResult, addReloadQuestionEventListener, removeReloadQuestionEventListener } = useQuiz()
+  const { phase, setPhase, result, setResult, currentAttempt } = useQuiz()
 
   const [userAnswers, setUserAnswers] = useState<Array<string>>([''])
   const [isLoading, setIsLoading] = useState<boolean>(false)
@@ -45,12 +45,7 @@ export function MultiQuestion (props: MultiQuestionProps) {
     }
   }, [phase])
 
-  useEffect(() => {
-    const reloadQuestion = () => setUserAnswers([''])
-    addReloadQuestionEventListener(reloadQuestion)
-
-    return () => removeReloadQuestionEventListener(reloadQuestion)
-  }, [addReloadQuestionEventListener, removeReloadQuestionEventListener])
+  useEffect(() => setUserAnswers(['']), [currentAttempt])
 
   return (
     <Box component={"form"} onSubmit={(event) => {

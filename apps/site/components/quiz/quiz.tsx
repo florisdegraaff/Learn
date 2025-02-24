@@ -3,7 +3,6 @@ import { Box, LinearProgress } from "@mui/material";
 import { Theme } from "@repo/sanity-types";
 import { useRouter } from "next/navigation";
 import { createContext, useCallback, useContext, useEffect, useMemo, useState } from "react";
-import useEvent from "../../lib/events";
 
 type QuizContextType = {
   currentQuestion?: Theme['questions'][0],
@@ -13,8 +12,6 @@ type QuizContextType = {
   result: "correct" | "incorrect" | undefined,
   setResult: (response: "correct" | "incorrect") => void,
   currentAttempt: number,
-  addReloadQuestionEventListener: (func: () => void) => void,
-  removeReloadQuestionEventListener: (func: () => void) => void
 }
 
 const QuizContext = createContext<QuizContextType>({
@@ -23,8 +20,6 @@ const QuizContext = createContext<QuizContextType>({
   result: undefined,
   setResult: () => undefined,
   currentAttempt: 0,
-  addReloadQuestionEventListener: () => undefined,
-  removeReloadQuestionEventListener: () => undefined
 })
 
 type QuizContextProviderProps = {
@@ -43,18 +38,16 @@ export function QuizContextProvider (props: QuizContextProviderProps) {
   const [phase, setPhase] = useState<"answering" | "answered">("answering")
   const [result, setResult] = useState<"correct" | "incorrect" | undefined>(undefined)
 
-  const reloadQuestionEvent = useEvent("onReloadQuestion")
-  
   useEffect(() => {
-    function reloadQuestion () {
-      setPhase("answering")
-      setResult(undefined)
-      setCurrentAttempt(1)
-    }
+    setPhase("answering")
+    setResult(undefined)
+    setCurrentAttempt(1)
+  }, [currentQuestion])
 
-    reloadQuestionEvent.addEventListener(reloadQuestion)
-    return () => reloadQuestionEvent.removeEventListener(reloadQuestion)
-  }, [currentQuestion, reloadQuestionEvent])
+  useEffect(() => {
+    setPhase("answering")
+    setResult(undefined)
+  }, [currentAttempt])
   
   useEffect(() => {
     const handleBeforeUnload = (event: BeforeUnloadEvent) => {
@@ -67,22 +60,19 @@ export function QuizContextProvider (props: QuizContextProviderProps) {
     };
   }, []);
 
-  const nextQuestion = useCallback((result: "correct" | "incorrect") => {
-    const newQuestions = [...questions]
-    
-    if (result === 'correct')
+  const nextQuestion = useCallback(() => {
+    if (result === 'incorrect') {
+      setCurrentAttempt(currentAttempt => currentAttempt + 1)
+    } else {
+      const newQuestions = [...questions]
       newQuestions.shift()
 
-    if (result === 'incorrect' && currentQuestion && currentAttempt === 1) {
-      newQuestions.splice(5, 0, currentQuestion)
-      setCurrentAttempt(currentAttempt => currentAttempt + 1)
-    }
+      if (currentAttempt !== 1 && currentQuestion) newQuestions.splice(5, 0, currentQuestion)
 
-    if (newQuestions.length > 0) {
-      setQuestions(newQuestions)
-      reloadQuestionEvent.triggerEvent()
-    } else router.push('../')
-  }, [currentAttempt, currentQuestion, questions, reloadQuestionEvent, router])
+      if (newQuestions.length > 0) setQuestions(newQuestions)
+      else router.push('../')
+    }
+  }, [currentAttempt, currentQuestion, questions, result, router])
 
   return (
     <QuizContext.Provider value={{
@@ -93,8 +83,6 @@ export function QuizContextProvider (props: QuizContextProviderProps) {
       result,
       setResult,
       currentAttempt,
-      addReloadQuestionEventListener: reloadQuestionEvent.addEventListener,
-      removeReloadQuestionEventListener: reloadQuestionEvent.removeEventListener
     }}>
       <Box display={"flex"} flexDirection={"column"} alignItems={"center"}>
         <LinearProgress sx={{width: "100%"}} value={100 * (1 - questions.length / theme.questions.length)} variant="determinate" />

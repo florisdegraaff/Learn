@@ -11,7 +11,7 @@ type OpenQuestionProps = Omit<OpenQuestionType, '_type'>
 
 export function OpenQuestion (props: OpenQuestionProps) {
   const { question, answer, image, exact } = props
-  const { phase, setPhase, result, setResult, currentAttempt, addReloadQuestionEventListener, removeReloadQuestionEventListener } = useQuiz()
+  const { phase, setPhase, result, setResult, currentAttempt } = useQuiz()
 
   const [userAnswer, setUserAnswer] = useState<string>('')
   const [isLoading, setIsLoading] = useState<boolean>(false)
@@ -34,12 +34,7 @@ export function OpenQuestion (props: OpenQuestionProps) {
     }
   }, [answer, exact, result, setResult, phase, userAnswer, question, isLoading])
 
-  useEffect(() => {
-    const reloadQuestion = () => setUserAnswer("")
-    addReloadQuestionEventListener(reloadQuestion)
-
-    return () => removeReloadQuestionEventListener(reloadQuestion)
-  }, [addReloadQuestionEventListener, removeReloadQuestionEventListener])
+  useEffect(() => setUserAnswer(""), [currentAttempt])
 
   return (
     <Box component={"form"} onSubmit={(event) => {
