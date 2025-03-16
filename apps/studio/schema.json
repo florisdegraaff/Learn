@@ -417,6 +417,13 @@
           },
           "optional": false
         },
+        "showAmount": {
+          "type": "objectAttribute",
+          "value": {
+            "type": "boolean"
+          },
+          "optional": true
+        },
         "exact": {
           "type": "objectAttribute",
           "value": {

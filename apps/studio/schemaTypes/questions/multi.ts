@@ -24,6 +24,11 @@ export const multiQuestion = defineType({
       validation: (rule) => rule.required()
     }),
     defineField({
+      title: "Show amount",
+      name: "showAmount",
+      type: "boolean"
+    }),
+    defineField({
       title: "Answer is exact",
       name: "exact",
       type: "boolean",

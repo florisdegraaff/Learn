@@ -11,10 +11,10 @@ import { useQuiz } from "../../quiz/quiz";
 type MultiQuestionProps = Omit<MultiQuestionType, '_type'>
 
 export function MultiQuestion (props: MultiQuestionProps) {
-  const { question, answers, image, exact } = props
+  const { question, answers, image, exact, showAmount } = props
   const { phase, setPhase, result, setResult, currentAttempt } = useQuiz()
 
-  const [userAnswers, setUserAnswers] = useState<Array<string>>([''])
+  const [userAnswers, setUserAnswers] = useState<Array<string>>(showAmount ? answers.map((() => '')) : [''])
   const [isLoading, setIsLoading] = useState<boolean>(false)
   const [feedback, setFeedback] = useState<string | undefined>(undefined)
 
@@ -41,11 +41,12 @@ export function MultiQuestion (props: MultiQuestionProps) {
 
   useEffect(() => {
     if (phase === 'answering') {
-      setUserAnswers([''])
+      setUserAnswers(showAmount ? answers.map((() => '')) : [''])
     }
   }, [phase])
 
-  useEffect(() => setUserAnswers(['']), [currentAttempt])
+  // eslint-disable-next-line react-hooks/exhaustive-deps
+  useEffect(() => setUserAnswers(showAmount ? answers.map((() => '')) : ['']), [currentAttempt])
 
   return (
     <Box component={"form"} onSubmit={(event) => {
@@ -53,66 +54,73 @@ export function MultiQuestion (props: MultiQuestionProps) {
       setPhase('answered')
     }}>
       <Typography variant="h2">{question}</Typography>
-      <List>
-        {userAnswers.map((userAnswer, key) => {
-          return (
-            <ListItem key={`userAnswer-${key}`} sx={{
-              columnGap: "1rem"
-            }}>
-              <TextField
-                fullWidth
-                onChange={(event) => {
-                  const newUserAnswers = [...userAnswers]
-                  newUserAnswers[key] = event.currentTarget.value
-                  setUserAnswers(newUserAnswers)
-                }}
-                disabled={phase === 'answered'}
-                value={userAnswer}
-              />
-              <IconButton
-                onClick={() => {
-                  if (userAnswers.length < 1) return
-                  const newUserAnswers = [...userAnswers]
-                  newUserAnswers.splice(key, 1)
-                  setUserAnswers(newUserAnswers)
-                }}
-                disabled={userAnswers.length < 1 || phase === 'answered'}
-              ><Delete /></IconButton>
-            </ListItem>
-          )
-        })}
-      </List>
-      
-      <Button
-        startIcon={<Add/>}
-        onClick={() => setUserAnswers((userAnswers) => [...userAnswers, ''])}
-        disabled={phase === 'answered'}
-      >Voeg toe</Button>
-
       <Box display={"flex"}>
         <Box flex={1}>
-          {isLoading && (
-            <Box><CircularProgress /></Box>
-          )}
-          {result && (
-            <>
-              <Typography>{result}</Typography>
-              <Typography fontWeight={700}>Juiste antwoorden:</Typography>
-              {answers.map((answer) => (
-                <Typography key={answer.replace(' ', '-').toLowerCase()}>{answer}</Typography>
-              ))}
-              {feedback && (<>
-                <Typography fontWeight={700}>Feedback van ChatGPT:</Typography>
-                <Typography>{feedback}</Typography>
-              </>)}
-            </>
+          <List>
+            {userAnswers.map((userAnswer, key) => {
+              return (
+                <ListItem key={`userAnswer-${key}`} sx={{
+                  columnGap: "1rem"
+                }}>
+                  <TextField
+                    fullWidth
+                    onChange={(event) => {
+                      const newUserAnswers = [...userAnswers]
+                      newUserAnswers[key] = event.currentTarget.value
+                      setUserAnswers(newUserAnswers)
+                    }}
+                    disabled={phase === 'answered'}
+                    value={userAnswer}
+                  />
+                  {!showAmount && (
+                    <IconButton
+                      onClick={() => {
+                        if (userAnswers.length < 1) return
+                        const newUserAnswers = [...userAnswers]
+                        newUserAnswers.splice(key, 1)
+                        setUserAnswers(newUserAnswers)
+                      }}
+                      disabled={userAnswers.length < 1 || phase === 'answered'}
+                    ><Delete /></IconButton>
+                  )}
+                </ListItem>
+              )
+            })}
+          </List>
+          
+          {!showAmount && (
+            <Button
+              startIcon={<Add/>}
+              onClick={() => setUserAnswers((userAnswers) => [...userAnswers, ''])}
+              disabled={phase === 'answered'}
+            >Voeg toe</Button>
           )}
         </Box>
-        <Box position={"relative"} width={"100%"} height={"50vh"} flex={1}>
-          {image && (
+        
+        {image && (
+          <Box position={"relative"} height={"50vh"} flex={1}>
             <Image src={urlFor(image).url()} alt={""} fill objectFit={"contain"} />
-          )}
-        </Box>
+          </Box>
+        )}
+      </Box>
+
+      <Box>
+        {isLoading && (
+          <Box><CircularProgress /></Box>
+        )}
+        {result && (
+          <>
+            <Typography>{result}</Typography>
+            <Typography fontWeight={700}>Juiste antwoorden:</Typography>
+            {answers.map((answer) => (
+              <Typography key={answer.replace(' ', '-').toLowerCase()}>{answer}</Typography>
+            ))}
+            {feedback && (<>
+              <Typography fontWeight={700}>Feedback van ChatGPT:</Typography>
+              <Typography>{feedback}</Typography>
+            </>)}
+          </>
+        )}
       </Box>
     </Box>
   )
