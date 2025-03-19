@@ -1,5 +1,5 @@
 'use client'
-import { Box, LinearProgress } from "@mui/material";
+import { Box, LinearProgress, Typography } from "@mui/material";
 import { Theme } from "@repo/sanity-types";
 import { useRouter } from "next/navigation";
 import { createContext, useCallback, useContext, useEffect, useMemo, useState } from "react";
@@ -86,7 +86,7 @@ export function QuizContextProvider (props: QuizContextProviderProps) {
     }}>
       <Box display={"flex"} flexDirection={"column"} alignItems={"center"}>
         <LinearProgress sx={{width: "100%"}} value={100 * (1 - questions.length / theme.questions.length)} variant="determinate" />
-        {/* <Typography variant="caption">{theme.questions.length - questions.length} / {theme.questions.length}</Typography> */}
+        <Typography variant="caption">{theme.questions.length - questions.length} / {theme.questions.length}</Typography>
       </Box>
       {children}
     </QuizContext.Provider>

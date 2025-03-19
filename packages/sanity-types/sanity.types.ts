@@ -83,6 +83,7 @@ export type MultiQuestion = {
     _type: "image";
   };
   answers: Array<string>;
+  showAmount?: boolean;
   exact?: boolean;
 };
 
