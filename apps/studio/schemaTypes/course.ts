@@ -23,10 +23,10 @@ export const course = defineType({
       validation: (rule) => rule.required()
     }),
     defineField({
-      title: "Themes",
-      name: "themes",
+      title: "Sections",
+      name: "sections",
       type: "array", 
-      of: [{ type: "theme" }]
+      of: [{ type: "section" }]
     })
   ],
 })
