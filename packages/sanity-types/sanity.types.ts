@@ -39,6 +39,22 @@ export type SanityImageDimensions = {
   aspectRatio?: number;
 };
 
+export type SanityImageHotspot = {
+  _type: "sanity.imageHotspot";
+  x?: number;
+  y?: number;
+  height?: number;
+  width?: number;
+};
+
+export type SanityImageCrop = {
+  _type: "sanity.imageCrop";
+  top?: number;
+  bottom?: number;
+  left?: number;
+  right?: number;
+};
+
 export type SanityFileAsset = {
   _id: string;
   _type: "sanity.fileAsset";
@@ -59,90 +75,6 @@ export type SanityFileAsset = {
   path?: string;
   url?: string;
   source?: SanityAssetSourceData;
-};
-
-export type Geopoint = {
-  _type: "geopoint";
-  lat?: number;
-  lng?: number;
-  alt?: number;
-};
-
-export type MultiQuestion = {
-  _type: "multiQuestion";
-  question: string;
-  image?: {
-    asset?: {
-      _ref: string;
-      _type: "reference";
-      _weak?: boolean;
-      [internalGroqTypeReferenceTo]?: "sanity.imageAsset";
-    };
-    hotspot?: SanityImageHotspot;
-    crop?: SanityImageCrop;
-    _type: "image";
-  };
-  answers: Array<string>;
-  showAmount?: boolean;
-  exact?: boolean;
-};
-
-export type OpenQuestion = {
-  _type: "openQuestion";
-  question: string;
-  image?: {
-    asset?: {
-      _ref: string;
-      _type: "reference";
-      _weak?: boolean;
-      [internalGroqTypeReferenceTo]?: "sanity.imageAsset";
-    };
-    hotspot?: SanityImageHotspot;
-    crop?: SanityImageCrop;
-    _type: "image";
-  };
-  answer: string;
-  exact?: boolean;
-};
-
-export type Theme = {
-  _type: "theme";
-  title: string;
-  slug: Slug;
-  questions: Array<{
-    _key: string;
-  } & OpenQuestion | {
-    _key: string;
-  } & MultiQuestion>;
-};
-
-export type Course = {
-  _id: string;
-  _type: "course";
-  _createdAt: string;
-  _updatedAt: string;
-  _rev: string;
-  title: string;
-  slug: Slug;
-  themes?: Array<{
-    _key: string;
-  } & Theme>;
-};
-
-export type SanityImageCrop = {
-  _type: "sanity.imageCrop";
-  top?: number;
-  bottom?: number;
-  left?: number;
-  right?: number;
-};
-
-export type SanityImageHotspot = {
-  _type: "sanity.imageHotspot";
-  x?: number;
-  y?: number;
-  height?: number;
-  width?: number;
 };
 
 export type SanityImageAsset = {
@@ -168,13 +100,6 @@ export type SanityImageAsset = {
   source?: SanityAssetSourceData;
 };
 
-export type SanityAssetSourceData = {
-  _type: "sanity.assetSourceData";
-  name?: string;
-  id?: string;
-  url?: string;
-};
-
 export type SanityImageMetadata = {
   _type: "sanity.imageMetadata";
   location?: Geopoint;
@@ -186,13 +111,82 @@ export type SanityImageMetadata = {
   isOpaque?: boolean;
 };
 
+export type Geopoint = {
+  _type: "geopoint";
+  lat?: number;
+  lng?: number;
+  alt?: number;
+};
+
+export type SanityAssetSourceData = {
+  _type: "sanity.assetSourceData";
+  name?: string;
+  id?: string;
+  url?: string;
+};
+
+export type OpenQuestion = {
+  _type: "openQuestion";
+  question: string;
+  answer: string;
+};
+
+export type MultipleChoiceQuestion = {
+  _type: "multipleChoiceQuestion";
+  question: string;
+  answers: Array<{
+    answer: string;
+    isCorrect?: boolean;
+    _key: string;
+  }>;
+};
+
+export type Program = {
+  _id: string;
+  _type: "program";
+  _createdAt: string;
+  _updatedAt: string;
+  _rev: string;
+  title: string;
+  courses?: Array<{
+    _ref: string;
+    _type: "reference";
+    _weak?: boolean;
+    _key: string;
+    [internalGroqTypeReferenceTo]?: "course";
+  }>;
+};
+
+export type Section = {
+  _type: "section";
+  title?: string;
+  questions: Array<{
+    _key: string;
+  } & MultipleChoiceQuestion | {
+    _key: string;
+  } & OpenQuestion>;
+};
+
+export type Course = {
+  _id: string;
+  _type: "course";
+  _createdAt: string;
+  _updatedAt: string;
+  _rev: string;
+  title: string;
+  slug: Slug;
+  sections?: Array<{
+    _key: string;
+  } & Section>;
+};
+
 export type Slug = {
   _type: "slug";
   current: string;
   source?: string;
 };
 
-export type AllSanitySchemaTypes = SanityImagePaletteSwatch | SanityImagePalette | SanityImageDimensions | SanityFileAsset | Geopoint | MultiQuestion | OpenQuestion | Theme | Course | SanityImageCrop | SanityImageHotspot | SanityImageAsset | SanityAssetSourceData | SanityImageMetadata | Slug;
+export type AllSanitySchemaTypes = SanityImagePaletteSwatch | SanityImagePalette | SanityImageDimensions | SanityImageHotspot | SanityImageCrop | SanityFileAsset | SanityImageAsset | SanityImageMetadata | Geopoint | SanityAssetSourceData | OpenQuestion | MultipleChoiceQuestion | Program | Section | Course | Slug;
 export declare const internalGroqTypeReferenceTo: unique symbol;
 // Source: ../site/lib/sanity/queries.ts
 // Variable: COURSES_QUERY
@@ -205,9 +199,9 @@ export type COURSES_QUERYResult = Array<{
   _rev: string;
   title: string;
   slug: Slug;
-  themes?: Array<{
+  sections?: Array<{
     _key: string;
-  } & Theme>;
+  } & Section>;
 }>;
 // Variable: COURSE_BY_SLUG_QUERY
 // Query: *[_type == "course" && slug.current == $courseSlug][0]
@@ -219,15 +213,13 @@ export type COURSE_BY_SLUG_QUERYResult = {
   _rev: string;
   title: string;
   slug: Slug;
-  themes?: Array<{
+  sections?: Array<{
     _key: string;
-  } & Theme>;
+  } & Section>;
 } | null;
 // Variable: THEME_BY_SLUG_QUERY
 // Query: *[_type == "course" && slug.current == $courseSlug][0].themes[slug.current == $themeSlug][0]
-export type THEME_BY_SLUG_QUERYResult = {
-  _key: string;
-} & Theme | null;
+export type THEME_BY_SLUG_QUERYResult = null;
 
 // Query TypeMap
 import "@sanity/client";

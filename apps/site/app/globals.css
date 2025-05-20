@@ -1,20 +1,22 @@
 :root {
-  --foreground: #ffffff;
-  --background: #171717;
+  --background: #ffffff;
+  --foreground: #171717;
 
   --color-primary: #1290af
 }
 
 html,
 body {
-  max-width: 100vw;
   overflow-x: hidden;
+  height: 100vh;
 }
 
 body {
   color: var(--foreground);
   background: var(--background);
   min-height: 100vh;
+  display: flex;
+  flex-direction: column;
 }
 
 * {
@@ -35,6 +37,12 @@ a {
 @media (prefers-color-scheme: dark) {
   html {
     color-scheme: dark;
+  }
+
+  :root {
+    
+  --background: #171717;
+  --foreground: #ffffff;
   }
 
   .imgLight {

@@ -1,5 +1,6 @@
-import { Container, List, ListItemButton, Typography } from "@mui/material"
-import { fetchCourseBySlug } from "../../lib/sanity/queries"
+import { fetchCourseBySlug } from "@lib/sanity/queries";
+import { AllInclusive, ArrowForward } from "@mui/icons-material";
+import { Container, List, ListItem, ListItemButton, ListItemIcon, ListItemText, Typography } from "@mui/material";
 
 export default async function CoursePage (pageProps: Readonly<{
   params: Promise<{
@@ -10,18 +11,16 @@ export default async function CoursePage (pageProps: Readonly<{
   const course = await fetchCourseBySlug(courseSlug)
 
   return (
-    <Container component={"main"}>
+    <Container>
       <Typography variant="h1">{course?.title}</Typography>
-      <Typography variant="h2">Thema&apos;s</Typography>
-      {course?.themes?.map((theme) => {
-        return (
-          <List key={theme._key}>
-            <ListItemButton href={`/${courseSlug}/${theme.slug.current}`}>
-              <Typography>{theme.title}</Typography>
-            </ListItemButton>
-          </List>
-        )
-      })}
+      <List>
+        <ListItem disablePadding secondaryAction={<ListItemIcon><ArrowForward /></ListItemIcon>}>
+          <ListItemButton href={`/${course?.slug.current}/quiz`}>
+            <ListItemIcon><AllInclusive /></ListItemIcon>
+            <ListItemText>Alles</ListItemText>
+          </ListItemButton>
+        </ListItem>
+      </List>
     </Container>
   )
 }

@@ -1,6 +1,7 @@
-import { multiQuestion } from "./questions/multi";
-import { openQuestion } from "./questions/open";
+import { multipleChoiceQuestion } from "./questions/multipleChoice";
+import { openQuestion } from "./questions/openQuestion";
 
 export const questions = [
-  openQuestion, multiQuestion
+  multipleChoiceQuestion,
+  openQuestion
 ]

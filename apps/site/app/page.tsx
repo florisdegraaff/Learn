@@ -1,37 +1,20 @@
-import { Button, Card, CardActions, CardContent, Container, Typography } from "@mui/material";
-import { fetchCourses } from "../lib/sanity/queries";
+import { fetchCourses } from "@lib/sanity/queries";
+import { Container, List, ListItem, ListItemButton, ListItemText } from "@mui/material";
 
-export default async function Home() {
+export default async function Page () {
   const courses = await fetchCourses()
-
+  
   return (
-    <main>
-      <Container sx={{
-        display: "grid",
-        gridTemplateColumns: "repeat(12, 1fr)",
-        gap: "1rem"
-      }}>
-        {courses.map((course) => {
-          return (
-            <Card
-              key={course._id}
-              variant="outlined"
-              raised
-              sx={{
-                gridColumn: "span 3",
-                borderRadius: "0.5rem"
-              }}
-            >
-              <CardContent>
-                <Typography>{course.title}</Typography>
-              </CardContent>
-              <CardActions>
-                <Button size="small" href={`/${course.slug.current}`}>Go to</Button>
-              </CardActions>
-            </Card>
-          )
-        })}
-      </Container>
-    </main>
-  );
+    <Container component={"main"}>
+      <List>
+        {courses.map((course) => (
+          <ListItem key={course._id} disablePadding>
+            <ListItemButton href={`/${course.slug.current}`}>
+              <ListItemText primary={course.title} />
+            </ListItemButton>
+          </ListItem>
+        ))}
+      </List>
+    </Container>
+  )
 }

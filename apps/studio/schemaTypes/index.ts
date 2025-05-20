@@ -1,7 +1,8 @@
 import { course } from "./course";
+import { program } from "./program";
 import { questions } from "./questions";
-import { theme } from "./theme";
+import { section } from "./section";
 
 export const schemaTypes = [
-  course, theme, ...questions
+  course, section, program, ...questions
 ]
