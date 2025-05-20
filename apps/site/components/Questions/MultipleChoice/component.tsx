@@ -2,7 +2,7 @@
 
 import { Button, Checkbox, FormControl, FormControlLabel, FormGroup, FormLabel, Radio, RadioGroup, Typography } from "@mui/material";
 import { MultipleChoiceQuestion as MultipleChoiceQuestionType } from "@repo/sanity-types";
-import { Dispatch, SetStateAction, useState } from "react";
+import { Dispatch, SetStateAction, useEffect, useState } from "react";
 
 type MultipleChoiceQuestionProps = {
   question: MultipleChoiceQuestionType
@@ -11,6 +11,15 @@ type MultipleChoiceQuestionProps = {
 
 export function MultipleChoiceQuestion (props: MultipleChoiceQuestionProps) {
   const { question, nextQuestion } = props
+  const [answers, setShuffled] = useState<MultipleChoiceQuestionType['answers']>([])
+
+  useEffect(() => {
+    const shuffled = [...question.answers]
+      .map(value => ({ value, sort: Math.random() }))
+      .sort((a, b) => a.sort - b.sort)
+      .map(({ value }) => value)
+    setShuffled(shuffled)
+  }, [question.answers])
 
   const [selectedAnswers, setSelectedAnswers] = useState<Array<string>>([])
   const [isSubmitted, setIsSubmitted] = useState<boolean>()
@@ -23,20 +32,19 @@ export function MultipleChoiceQuestion (props: MultipleChoiceQuestionProps) {
       <FormLabel>
         <Typography variant="h4" component={'p'}>{question?.question}</Typography>
       </FormLabel>
-      {question.answers.filter(answer => answer.isCorrect).length > 1
-        ? <MultipleAnswers question={question.question} answers={question.answers} isSubmitted={isSubmitted} selectedAnswers={selectedAnswers} setSelectedAnswers={setSelectedAnswers} />
-        : <SingleAnswer question={question.question} answers={question.answers} isSubmitted={isSubmitted} selectedAnswers={selectedAnswers} setSelectedAnswers={setSelectedAnswers} />
+      {answers.filter(answer => answer.isCorrect).length > 1
+        ? <MultipleAnswers question={question.question} answers={answers} isSubmitted={isSubmitted} selectedAnswers={selectedAnswers} setSelectedAnswers={setSelectedAnswers} />
+        : <SingleAnswer question={question.question} answers={answers} isSubmitted={isSubmitted} selectedAnswers={selectedAnswers} setSelectedAnswers={setSelectedAnswers} />
       }
       {!isSubmitted
         ? <Button type="submit" disabled={!selectedAnswers}>Submit</Button>
         : <Button type="button" onClick={() => {
-          const answerIsCorrect = question.answers.reduce((prev, curr) => {
+          const answerIsCorrect = answers.reduce((prev, curr) => {
             if (prev === false) return false
             return  curr.isCorrect 
               ? selectedAnswers.includes(curr._key)
               : !selectedAnswers.includes(curr._key)
           }, true)
-          console.log(answerIsCorrect ? "correct" : "incorrect")
           nextQuestion(answerIsCorrect ? "correct" : "incorrect")
         }}>Next question</Button>}
     </FormControl>
