@@ -12,7 +12,10 @@ export const useQuestionnaire = (rawQuestions: Section['questions']) => {
   const currentQuestion = useMemo(() => {
     const currentQuestion = {...questionQueue[0]}
     if (currentQuestion.question?._type === 'multipleChoiceQuestion' && currentQuestion.attemptsLeft === 1) {
-      return MultipleChoiceToOpen(currentQuestion.question)
+      return {
+        _key: currentQuestion.question._key,
+        ...MultipleChoiceToOpen(currentQuestion.question)
+      }
     }
     return currentQuestion.question
   } , [questionQueue])
@@ -23,6 +26,7 @@ export const useQuestionnaire = (rawQuestions: Section['questions']) => {
       const currentQuestion = newQueue.shift()
       
       if (!currentQuestion) return newQueue
+
       const currentCopy = {...currentQuestion}
       if (result === 'correct') {
         currentCopy.attemptsLeft -= 1
