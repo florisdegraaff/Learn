@@ -748,6 +748,13 @@
             }
           },
           "optional": false
+        },
+        "becomesOpen": {
+          "type": "objectAttribute",
+          "value": {
+            "type": "boolean"
+          },
+          "optional": true
         }
       }
     }

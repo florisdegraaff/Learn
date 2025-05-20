@@ -11,7 +11,11 @@ export const useQuestionnaire = (rawQuestions: Section['questions']) => {
 
   const currentQuestion = useMemo(() => {
     const currentQuestion = {...questionQueue[0]}
-    if (currentQuestion.question?._type === 'multipleChoiceQuestion' && currentQuestion.attemptsLeft === 1) {
+    if (currentQuestion.question?._type === 'multipleChoiceQuestion'
+      && currentQuestion.question.becomesOpen
+      && currentQuestion.question.answers.filter((answer) => answer.isCorrect).length > 1
+      && currentQuestion.attemptsLeft === 1
+    ) {
       return {
         _key: currentQuestion.question._key,
         ...MultipleChoiceToOpen(currentQuestion.question)

@@ -89,7 +89,7 @@ function MultipleAnswers (props: Omit<MultipleChoiceQuestionType, '_type'> &
     setSelectedAnswers: Dispatch<SetStateAction<string[]>>
   })
 ) {
-  const { question, answers, isSubmitted, selectedAnswers, setSelectedAnswers } = props
+  const { answers, isSubmitted, selectedAnswers, setSelectedAnswers } = props
   return (
     <FormGroup>
       {answers.map((answer) => {

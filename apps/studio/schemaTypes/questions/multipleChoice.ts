@@ -34,6 +34,14 @@ export const multipleChoiceQuestion = defineType({
         }
       ],
       validation: (rule) => rule.required(),
+    }),
+    defineField({
+      title: "Becomes open",
+      name: "becomesOpen",
+      type: "boolean"
     })
-  ]
+  ],
+  initialValue: {
+    becomesOpen: true
+  }
 })

@@ -139,6 +139,7 @@ export type MultipleChoiceQuestion = {
     isCorrect?: boolean;
     _key: string;
   }>;
+  becomesOpen?: boolean;
 };
 
 export type Program = {
