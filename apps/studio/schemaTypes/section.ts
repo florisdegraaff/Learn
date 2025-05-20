@@ -15,7 +15,8 @@ export const section = defineType({
       name: "questions",
       type: "array",
       of: [
-        { type: "multipleChoiceQuestion" }
+        { type: "multipleChoiceQuestion" },
+        { type: "openQuestion" }
       ],
       validation: (rule) => rule.required()
     })

@@ -1,4 +1,4 @@
-import { Section } from "@repo/sanity-types";
+import { MultipleChoiceQuestion, OpenQuestion, Section } from "@repo/sanity-types";
 import { useCallback, useMemo, useState } from "react";
 
 export const useQuestionnaire = (rawQuestions: Section['questions']) => {
@@ -9,7 +9,13 @@ export const useQuestionnaire = (rawQuestions: Section['questions']) => {
     }
   }))
 
-  const currentQuestion = useMemo(() => questionQueue[0]?.question, [questionQueue])
+  const currentQuestion = useMemo(() => {
+    const currentQuestion = {...questionQueue[0]}
+    if (currentQuestion.question?._type === 'multipleChoiceQuestion' && currentQuestion.attemptsLeft === 1) {
+      return MultipleChoiceToOpen(currentQuestion.question)
+    }
+    return currentQuestion.question
+  } , [questionQueue])
 
   const nextQuestion = useCallback((result: "correct" | "incorrect") => {
     setQuestionQueue((currentQuestionQueue) => {
@@ -24,10 +30,18 @@ export const useQuestionnaire = (rawQuestions: Section['questions']) => {
       } else {
         currentCopy.attemptsLeft = 3
       }
-      newQueue.splice(3, 0, currentCopy)
+      newQueue.splice(4, 0, currentCopy)
       return newQueue;
     })
   }, [])
 
   return { currentQuestion, nextQuestion }
+}
+
+function MultipleChoiceToOpen (multipleChoice: MultipleChoiceQuestion): OpenQuestion {
+  return {
+    _type: "openQuestion",
+    question: multipleChoice.question,
+    answer: multipleChoice.answers.find(question => question.isCorrect)?.answer || ""
+  }
 }

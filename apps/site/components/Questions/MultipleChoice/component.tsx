@@ -54,10 +54,8 @@ export function MultipleChoiceQuestion (props: MultipleChoiceQuestionProps) {
         })}
       </RadioGroup>
       {!isSubmitted
-        ? <Button type="submit">Submit</Button>
+        ? <Button type="submit" disabled={!selectedAnswer}>Submit</Button>
         : <Button type="button" onClick={() => {
-          setIsSubmitted(false)
-          setSelectedAnswer('')
           const answerIsCorrect = question.answers?.find((answer) => answer.isCorrect)?._key === selectedAnswer
           nextQuestion(answerIsCorrect ? "correct" : "incorrect")
         }}>Next question</Button>}

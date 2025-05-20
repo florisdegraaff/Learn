@@ -10,17 +10,9 @@ const theme = createTheme({
     h3: { fontSize: "2.4rem" },
     h4: { fontSize: "2rem" },
   },
-  // palette: {
-  //   success: {
-  //     main: '#00ff00'
-  //   },
-  //   error: {
-  //     main: '#ff0000'
-  //   }
-  // },
-  colorSchemes: {
-    // dark: ,
-  },
+  palette: {
+    mode: "dark"
+  }
 });
 
 export default theme;

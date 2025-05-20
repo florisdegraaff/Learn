@@ -1,6 +1,7 @@
 "use client"
 
-import { MultipleChoiceQuestion } from "@components/MultipleChoice/component";
+import { MultipleChoiceQuestion } from "@components/Questions/MultipleChoice/component";
+import { OpenQuestion } from "@components/Questions/Open/component";
 import { Section } from "@repo/sanity-types";
 import { useQuestionnaire } from "./helpers";
 
@@ -15,6 +16,12 @@ export function Quiz (props: QuizProps) {
     {currentQuestion?._type === 'multipleChoiceQuestion'
       ? <MultipleChoiceQuestion
           key={currentQuestion?._key}
+          question={currentQuestion}
+          nextQuestion={nextQuestion}
+        />
+      : currentQuestion?._type === 'openQuestion'
+      ? <OpenQuestion
+          key={currentQuestion._key}
           question={currentQuestion}
           nextQuestion={nextQuestion}
         />

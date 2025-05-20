@@ -125,11 +125,17 @@ export type SanityAssetSourceData = {
   url?: string;
 };
 
+export type OpenQuestion = {
+  _type: "openQuestion";
+  question: string;
+  answer: string;
+};
+
 export type MultipleChoiceQuestion = {
   _type: "multipleChoiceQuestion";
-  question?: string;
-  answers?: Array<{
-    answer?: string;
+  question: string;
+  answers: Array<{
+    answer: string;
     isCorrect?: boolean;
     _key: string;
   }>;
@@ -156,7 +162,9 @@ export type Section = {
   title?: string;
   questions: Array<{
     _key: string;
-  } & MultipleChoiceQuestion>;
+  } & MultipleChoiceQuestion | {
+    _key: string;
+  } & OpenQuestion>;
 };
 
 export type Course = {
@@ -178,7 +186,7 @@ export type Slug = {
   source?: string;
 };
 
-export type AllSanitySchemaTypes = SanityImagePaletteSwatch | SanityImagePalette | SanityImageDimensions | SanityImageHotspot | SanityImageCrop | SanityFileAsset | SanityImageAsset | SanityImageMetadata | Geopoint | SanityAssetSourceData | MultipleChoiceQuestion | Program | Section | Course | Slug;
+export type AllSanitySchemaTypes = SanityImagePaletteSwatch | SanityImagePalette | SanityImageDimensions | SanityImageHotspot | SanityImageCrop | SanityFileAsset | SanityImageAsset | SanityImageMetadata | Geopoint | SanityAssetSourceData | OpenQuestion | MultipleChoiceQuestion | Program | Section | Course | Slug;
 export declare const internalGroqTypeReferenceTo: unique symbol;
 // Source: ../site/lib/sanity/queries.ts
 // Variable: COURSES_QUERY

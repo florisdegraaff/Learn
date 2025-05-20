@@ -663,6 +663,36 @@
     }
   },
   {
+    "name": "openQuestion",
+    "type": "type",
+    "value": {
+      "type": "object",
+      "attributes": {
+        "_type": {
+          "type": "objectAttribute",
+          "value": {
+            "type": "string",
+            "value": "openQuestion"
+          }
+        },
+        "question": {
+          "type": "objectAttribute",
+          "value": {
+            "type": "string"
+          },
+          "optional": false
+        },
+        "answer": {
+          "type": "objectAttribute",
+          "value": {
+            "type": "string"
+          },
+          "optional": false
+        }
+      }
+    }
+  },
+  {
     "name": "multipleChoiceQuestion",
     "type": "type",
     "value": {
@@ -680,7 +710,7 @@
           "value": {
             "type": "string"
           },
-          "optional": true
+          "optional": false
         },
         "answers": {
           "type": "objectAttribute",
@@ -694,7 +724,7 @@
                   "value": {
                     "type": "string"
                   },
-                  "optional": true
+                  "optional": false
                 },
                 "isCorrect": {
                   "type": "objectAttribute",
@@ -717,7 +747,7 @@
               }
             }
           },
-          "optional": true
+          "optional": false
         }
       }
     }
@@ -835,19 +865,39 @@
           "value": {
             "type": "array",
             "of": {
-              "type": "object",
-              "attributes": {
-                "_key": {
-                  "type": "objectAttribute",
-                  "value": {
-                    "type": "string"
+              "type": "union",
+              "of": [
+                {
+                  "type": "object",
+                  "attributes": {
+                    "_key": {
+                      "type": "objectAttribute",
+                      "value": {
+                        "type": "string"
+                      }
+                    }
+                  },
+                  "rest": {
+                    "type": "inline",
+                    "name": "multipleChoiceQuestion"
+                  }
+                },
+                {
+                  "type": "object",
+                  "attributes": {
+                    "_key": {
+                      "type": "objectAttribute",
+                      "value": {
+                        "type": "string"
+                      }
+                    }
+                  },
+                  "rest": {
+                    "type": "inline",
+                    "name": "openQuestion"
                   }
                 }
-              },
-              "rest": {
-                "type": "inline",
-                "name": "multipleChoiceQuestion"
-              }
+              ]
             }
           },
           "optional": false

@@ -8,7 +8,8 @@ export const multipleChoiceQuestion = defineType({
     defineField({
       title: "Question",
       name: "question",
-      type: "string"
+      type: "string",
+      validation: (rule) => rule.required()
     }),
     defineField({
       title: "Answers",
@@ -21,7 +22,8 @@ export const multipleChoiceQuestion = defineType({
             defineField({
               title: "Answer",
               name: "answer",
-              type: "string"
+              type: "string",
+              validation: (rule) => rule.required(),
             }),
             defineField({
               title: "Is correct",
@@ -30,7 +32,8 @@ export const multipleChoiceQuestion = defineType({
             })
           ]
         }
-      ]
+      ],
+      validation: (rule) => rule.required(),
     })
   ]
 })
