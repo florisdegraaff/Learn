@@ -1,5 +1,5 @@
 {
-  "$schema": "https://turbo.build/schema.json",
+  "$schema": "https://turborepo.com/schema.json",
   "ui": "tui",
   "globalDependencies": [".env"],
   "globalEnv": ["GPT_API_KEY", "SANITY_STUDIO_DATASET", "SANITY_STUDIO_PROJECT_ID"],
@@ -23,6 +23,10 @@
       "env": ["GPT_API_KEY", "SANITY_STUDIO_DATASET", "SANITY_STUDIO_PROJECT_ID"]
     },
     "typegen": {
+      "cache": false,
+      "persistent": true
+    },
+    "storybook": {
       "cache": false,
       "persistent": true
     }

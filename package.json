@@ -2,23 +2,28 @@
   "name": "Learn",
   "private": true,
   "scripts": {
-    "build": "turbo build",
-    "dev": "turbo dev",
-    "lint": "turbo lint",
+    "build": "turbo run build",
+    "dev": "turbo run dev",
+    "lint": "turbo run lint",
     "typegen": "turbo typegen",
-    "format": "prettier --write \"**/*.{ts,tsx,md}\""
+    "storybook": "turbo storybook",
+    "format": "prettier --write \"**/*.{ts,tsx,md}\"",
+    "check-types": "turbo run check-types"
   },
   "devDependencies": {
-    "prettier": "^3.4.2",
-    "turbo": "^2.3.4",
-    "typescript": "5.7.3"
+    "prettier": "^3.5.3",
+    "turbo": "^2.5.3",
+    "typescript": "5.8.2"
   },
   "engines": {
     "node": ">=18"
   },
-  "packageManager": "npm@10.8.1",
+  "packageManager": "npm@10.9.2",
   "workspaces": [
     "apps/*",
     "packages/*"
-  ]
+  ],
+  "dependencies": {
+    "@repo/ui": "^0.0.0"
+  }
 }

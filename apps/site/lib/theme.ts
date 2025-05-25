@@ -11,7 +11,25 @@ const theme = createTheme({
     h4: { fontSize: "2rem" },
   },
   palette: {
-    mode: "dark"
+    primary: {
+      light: "#d0e3f1",
+      main: "#81b5d9",
+      dark: "#2f6f9d",
+      contrastText: "#ffffffde"
+    },
+    secondary: {
+      main: "#ffbeef"
+    },
+    error: {
+      main: "#e87461"
+    },
+    success: {
+      main: "#68edc6",
+      light: "#b6f6e3"
+    },
+    info: {
+      main: "#fabc3c"
+    },
   }
 });
 

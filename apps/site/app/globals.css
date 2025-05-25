@@ -1,14 +1,15 @@
-:root {
+/* :root {
   --background: #ffffff;
   --foreground: #171717;
 
   --color-primary: #1290af
-}
+} */
 
 html,
 body {
   overflow-x: hidden;
   height: 100vh;
+  background-color: var(--mui-palette-primary-light);
 }
 
 body {
@@ -30,7 +31,7 @@ a {
   text-decoration: none;
 }
 
-.imgDark {
+/* .imgDark {
   display: none;
 }
 
@@ -51,4 +52,4 @@ a {
   .imgDark {
     display: unset;
   }
-}
+} */
